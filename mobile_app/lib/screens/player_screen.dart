@@ -288,6 +288,22 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 ),
               ),
 
+              // 1.5. Intercept taps over the native video view
+              Positioned.fill(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    setState(() {
+                      _isControlsVisible = !_isControlsVisible;
+                    });
+                    if (_isControlsVisible) {
+                      _resetControlsTimer();
+                    }
+                  },
+                  child: const SizedBox.expand(),
+                ),
+              ),
+
               // 2. Countdown Banner if active
               if (_countdownSec != null)
                 Center(
