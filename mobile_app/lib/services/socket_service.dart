@@ -100,6 +100,22 @@ class SocketService {
         onChatMessage?.call(msg);
       }
     });
+
+    // Room State (useful for syncing upon reconnect)
+    socket!.on('room-state', (data) {
+      if (data != null && data is Map) {
+        if (data['videoState'] != null) {
+           final vState = data['videoState'];
+           final isPlaying = vState['isPlaying'] == true;
+           final currentTime = (vState['currentTime'] as num?)?.toDouble() ?? 0.0;
+           if (isPlaying) {
+             onRemotePlay?.call(currentTime);
+           } else {
+             onRemotePause?.call(currentTime);
+           }
+        }
+      }
+    });
   }
 
   void sendPlay(double currentTime) {
