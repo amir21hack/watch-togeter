@@ -326,7 +326,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: Container(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -393,6 +395,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     ),
                   ),
                 ),
+                ),
 
               // 4. Bottom Controls: Play/Pause, Seek, Progress Slider
               if (_isControlsVisible)
@@ -400,7 +403,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: Container(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -492,6 +497,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     ),
                   ),
                 ),
+                ),
 
               // 5. Floating Transparent Chat Drawer
               if (_isChatOpen)
@@ -500,7 +506,9 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   bottom: 70,
                   left: 16,
                   width: 280,
-                  child: Container(
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: const Color(0xFF0F172A).withOpacity(0.85),
@@ -574,6 +582,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       ],
                     ),
                   ),
+                ),
                 ),
             ],
           ),
