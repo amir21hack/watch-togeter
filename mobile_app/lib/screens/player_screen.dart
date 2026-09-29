@@ -70,11 +70,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
           advanced: VlcAdvancedOptions([
             VlcAdvancedOptions.networkCaching(2000),
           ]),
-          subtitle: widget.subtitlePath != null
-              ? VlcSubtitleOptions([
-                  VlcSubtitleOptions.subtitleTrack(1),
-                ])
-              : null,
         ),
       );
     } else {
@@ -82,13 +77,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
         File(widget.videoPathOrUrl),
         hwAcc: HwAcc.full,
         autoPlay: false,
-        options: VlcPlayerOptions(
-          subtitle: widget.subtitlePath != null
-              ? VlcSubtitleOptions([
-                  VlcSubtitleOptions.subtitleTrack(1),
-                ])
-              : null,
-        ),
       );
     }
 
@@ -319,7 +307,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         const SizedBox(height: 8),
                         Text(
                           '$_countdownSec',
-                          style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.black, fontFamily: 'monospace'),
+                          style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w900, fontFamily: 'monospace'),
                         ),
                       ],
                     ),
