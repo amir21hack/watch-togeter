@@ -1,0 +1,39 @@
+name: hamtamasha
+description: "هم‌تماشا - اپلیکیشن تماشای گروهی فیلم با هسته قدرتمند VLC"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # VLC Player Engine (LibVLC Native Core)
+  flutter_vlc_player: ^7.4.2
+
+  # Socket.IO Client for Real-time Synchronization
+  socket_io_client: ^3.0.2
+
+  # File Picker for Selecting Local MKV/MP4 & SRT files
+  file_picker: ^8.1.7
+
+  # Keep phone screen awake during movie playback
+  wakelock_plus: ^1.2.8
+
+  # Android Runtime Permissions
+  permission_handler: ^11.3.1
+
+  # Icons and Utilities
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
