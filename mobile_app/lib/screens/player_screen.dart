@@ -213,7 +213,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       _isControlsVisible = true;
     });
     _controlsTimer = Timer(const Duration(seconds: 4), () {
-      if (mounted) {
+      if (mounted && _vlcController.value.isInitialized && _vlcController.value.isPlaying) {
         setState(() {
           _isControlsVisible = false;
         });
