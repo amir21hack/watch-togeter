@@ -64,7 +64,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     if (widget.isNetworkUrl) {
       _vlcController = VlcPlayerController.network(
         widget.videoPathOrUrl,
-        hwAcc: HwAcc.full,
+        hwAcc: HwAcc.auto,
         autoPlay: false,
         options: VlcPlayerOptions(
           advanced: VlcAdvancedOptions([
@@ -75,7 +75,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     } else {
       _vlcController = VlcPlayerController.file(
         File(widget.videoPathOrUrl),
-        hwAcc: HwAcc.full,
+        hwAcc: HwAcc.auto,
         autoPlay: false,
       );
     }
