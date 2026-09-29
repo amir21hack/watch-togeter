@@ -93,28 +93,34 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
     _socket.onRemotePlay = (targetTime) async {
       _isSyncingFromRemote = true;
-      await _vlcController.setTime((targetTime * 1000).toInt());
-      await _vlcController.play();
-      Future.delayed(const Duration(milliseconds: 500), () {
-        _isSyncingFromRemote = false;
-      });
+      if (targetTime != null) {
+        final diff = (_vlcController.value.position.inSeconds - targetTime).abs();
+        if (diff > 2) {
+          _vlcController.setTime((targetTime * 1000).toInt());
+        }
+      }
+      _vlcController.play();
+      Future.delayed(const Duration(milliseconds: 500), () => _isSyncingFromRemote = false);
     };
 
     _socket.onRemotePause = (targetTime) async {
       _isSyncingFromRemote = true;
-      await _vlcController.pause();
-      await _vlcController.setTime((targetTime * 1000).toInt());
-      Future.delayed(const Duration(milliseconds: 500), () {
-        _isSyncingFromRemote = false;
-      });
+      if (targetTime != null) {
+        final diff = (_vlcController.value.position.inSeconds - targetTime).abs();
+        if (diff > 2) {
+          _vlcController.setTime((targetTime * 1000).toInt());
+        }
+      }
+      _vlcController.pause();
+      Future.delayed(const Duration(milliseconds: 500), () => _isSyncingFromRemote = false);
     };
 
     _socket.onRemoteSeek = (targetTime) async {
       _isSyncingFromRemote = true;
-      await _vlcController.setTime((targetTime * 1000).toInt());
-      Future.delayed(const Duration(milliseconds: 500), () {
-        _isSyncingFromRemote = false;
-      });
+      if (targetTime != null) {
+        _vlcController.setTime((targetTime * 1000).toInt());
+      }
+      Future.delayed(const Duration(milliseconds: 500), () => _isSyncingFromRemote = false);
     };
 
     _socket.onCountdown = (seconds) {
@@ -168,31 +174,31 @@ class _PlayerScreenState extends State<PlayerScreen> {
     final posSec = _vlcController.value.position.inSeconds.toDouble();
 
     if (isPlaying) {
-      await _vlcController.pause();
+      _vlcController.pause();
       _socket.sendPause(posSec);
     } else {
-      await _vlcController.play();
+      _vlcController.play();
       _socket.sendPlay(posSec);
     }
     _resetControlsTimer();
   }
 
-  void _seekRelative(int seconds) async {
+  void _seekRelative(int seconds) {
     if (!_vlcController.value.isInitialized) return;
     final currentMs = _vlcController.value.position.inMilliseconds;
     final targetMs = (currentMs + (seconds * 1000)).clamp(0, _vlcController.value.duration.inMilliseconds);
-    await _vlcController.setTime(targetMs);
+    _vlcController.setTime(targetMs);
     _socket.sendSeek(targetMs / 1000.0);
     _resetControlsTimer();
   }
 
-  void _syncToPartner() async {
-    await _vlcController.setTime((_partnerTime * 1000).toInt());
+  void _syncToPartner() {
+    _vlcController.setTime((_partnerTime * 1000).toInt());
     if (_partnerPlaying) {
-      await _vlcController.play();
+      _vlcController.play();
       _socket.sendPlay(_partnerTime);
     } else {
-      await _vlcController.pause();
+      _vlcController.pause();
       _socket.sendPause(_partnerTime);
     }
   }
