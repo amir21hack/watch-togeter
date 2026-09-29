@@ -34,6 +34,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   bool _isControlsVisible = true;
   bool _isChatOpen = false;
+  bool _showNewMessageBadge = false;
+  String? _latestMessageSender;
   Timer? _controlsTimer;
   Timer? _progressReportTimer;
 
@@ -151,9 +153,20 @@ class _PlayerScreenState extends State<PlayerScreen> {
     };
 
     _socket.onChatMessage = (msg) {
-      setState(() {
-        _messages.add(msg);
-      });
+      if (mounted) {
+        setState(() {
+          _messages.add(msg);
+          if (!_isChatOpen && msg.sender != widget.username) {
+            _showNewMessageBadge = true;
+            _latestMessageSender = msg.sender;
+          }
+        });
+        if (!_isChatOpen && msg.sender != widget.username) {
+          Future.delayed(const Duration(seconds: 4), () {
+            if (mounted) setState(() => _showNewMessageBadge = false);
+          });
+        }
+      }
     };
   }
 
@@ -396,16 +409,38 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           ),
                         ),
                         // Chat Toggle Button
-                        IconButton(
-                          icon: Icon(
-                            _isChatOpen ? Icons.chat_bubble_rounded : Icons.chat_bubble_outline_rounded,
-                            color: const Color(0xFF818CF8),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isChatOpen = !_isChatOpen;
-                            });
-                          },
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                _isChatOpen ? Icons.chat_bubble_rounded : Icons.chat_bubble_outline_rounded,
+                                color: const Color(0xFF818CF8),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isChatOpen = !_isChatOpen;
+                                  _showNewMessageBadge = false;
+                                });
+                              },
+                            ),
+                            if (_showNewMessageBadge)
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.redAccent,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    _latestMessageSender != null ? 'پیام از $_latestMessageSender' : 'پیام جدید',
+                                    style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     ),
