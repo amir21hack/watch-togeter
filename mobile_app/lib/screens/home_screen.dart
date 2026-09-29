@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'player_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -216,9 +217,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         controller: _roomIdController,
                         style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'monospace'),
                         decoration: InputDecoration(
-                          labelText: 'کد اتاق تماشا (Room ID)',
+                          labelText: 'کد اتاق (ساخت خودکار اتاق جدید)',
                           labelStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 12),
                           prefixIcon: const Icon(Icons.meeting_room_rounded, color: Color(0xFF6366F1), size: 20),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.autorenew_rounded, color: Color(0xFF6366F1)),
+                            onPressed: () {
+                              setState(() {
+                                _roomIdController.text = 'room-${DateTime.now().millisecondsSinceEpoch % 10000}';
+                              });
+                            },
+                          ),
                           filled: true,
                           fillColor: const Color(0xFF0F172A),
                           border: OutlineInputBorder(
@@ -341,6 +350,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 12),
+                // Update Button
+                TextButton.icon(
+                  onPressed: () async {
+                    final Uri url = Uri.parse('https://github.com/amir21hack/watch-togeter/actions');
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                    }
+                  },
+                  icon: const Icon(Icons.system_update_rounded, color: Color(0xFF94A3B8), size: 18),
+                  label: const Text('بررسی آپدیت جدید', style: TextStyle(color: Color(0xFF94A3B8), fontSize: 12)),
                 ),
                 const SizedBox(height: 20),
               ],
