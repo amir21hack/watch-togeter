@@ -44,9 +44,14 @@ android {
         versionName = flutterVersionName
     }
 
+    packagingOptions {
+        pickFirst 'lib/**/libc++_shared.so'
+    }
+
     buildTypes {
         release {
             signingConfig = signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
